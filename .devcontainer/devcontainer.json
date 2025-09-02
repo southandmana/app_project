@@ -1,0 +1,16 @@
+{
+  "name": "App Guide Devcontainer",
+  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu",
+  "features": {
+    "docker-in-docker": {}
+  },
+  "postCreateCommand": "./scripts/env_check.sh || true",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  }
+}

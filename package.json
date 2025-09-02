@@ -1,0 +1,9 @@
+{
+  "name": "app_project_guide",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node ./tests/sample.test.js",
+    "lint": "echo \"No lint configured. To add linting, run: npm install --save-dev eslint && npx eslint .\""
+  }
+}

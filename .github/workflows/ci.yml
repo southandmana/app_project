@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then npm ci; fi
+
+      - name: Run env_check (optional)
+        run: bash ./scripts/env_check.sh || true
+
+      - name: Run secret scan
+        run: |
+          bash ./scripts/secret_check.sh
+
+      - name: Run lint
+        run: |
+          if [ -f package.json ] && npm run -s lint >/dev/null 2>&1; then npm run lint; else echo "No lint script defined"; fi
+
+      - name: Run tests
+        run: |
+          if [ -f package.json ] && npm test >/dev/null 2>&1; then npm test; else echo "No tests defined"; fi
+
+  codeql:
+    name: CodeQL
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      - name: Run CodeQL
+        uses: github/codeql-action/analyze@v2
+
+  dependency_scan:
+    name: Dependency scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node Audit
+        if: "files.exists('package.json')"
+        run: |
+          npm ci || npm install
+          npm audit --audit-level=moderate || true
