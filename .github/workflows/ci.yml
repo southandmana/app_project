@@ -56,8 +56,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Node Audit
-        if: "files.exists('package.json')"
+      - name: Node Audit (runs only if package.json exists)
         run: |
-          npm ci || npm install
-          npm audit --audit-level=moderate || true
+          if [ -f package.json ]; then
+            npm ci || npm install
+            npm audit --audit-level=moderate || true
+          else
+            echo "No package.json found — skipping Node audit"
+          fi
