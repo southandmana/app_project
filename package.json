@@ -4,6 +4,6 @@
   "private": true,
   "scripts": {
     "test": "node ./tests/sample.test.js",
-    "lint": "echo \"No lint configured. To add linting, run: npm install --save-dev eslint && npx eslint .\""
+  "lint": "if command -v npx >/dev/null 2>&1 && npx eslint -v >/dev/null 2>&1; then npx eslint . || true; else echo 'No ESLint installed. Run: npm install --save-dev eslint && npx eslint .'; fi"
   }
 }
