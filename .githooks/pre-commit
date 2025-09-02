@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Running pre-commit checks: secret scan and tests"
+bash ./scripts/secret_check.sh
+node ./tests/sample.test.js
+echo "Pre-commit checks passed"
