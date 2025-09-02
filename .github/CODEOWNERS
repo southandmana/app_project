@@ -1,0 +1,4 @@
+# Require review from repo owner for changes to infra and config
+/package.json @southandmana
+/.github/ @southandmana
+/.eslintrc.json @southandmana
